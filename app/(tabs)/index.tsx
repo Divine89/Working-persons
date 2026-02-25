@@ -9,18 +9,28 @@ import {
   TouchableOpacity 
 } from 'react-native';
 import { Stack } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Home, Leaf, Flame, Ship, Diamond, ShieldCheck } from 'lucide-react-native';
 import { supabase } from '../../lib/supabase';
 import PropertyCard from '../../components/PropertyCard';
+import SearchBar from '../../components/SearchBar'; // Import the new SearchBar component
 
 const CATEGORIES = [
-  { name: 'Tiny Homes', icon: 'home-outline' },
-  { name: 'Cabins', icon: 'leaf-outline' },
-  { name: 'Trending', icon: 'flame-outline' },
-  { name: 'Beachfront', icon: 'boat-outline' },
-  { name: 'Luxury', icon: 'diamond-outline' },
-  { name: 'Castles', icon: 'shield-checkmark-outline' },
+  { name: 'Tiny Homes', icon: 'Home' },
+  { name: 'Cabins', icon: 'Leaf' },
+  { name: 'Trending', icon: 'Flame' },
+  { name: 'Beachfront', icon: 'Ship' },
+  { name: 'Luxury', icon: 'Diamond' },
+  { name: 'Castles', icon: 'ShieldCheck' },
 ];
+
+const iconMap = {
+  Home: Home,
+  Leaf: Leaf,
+  Flame: Flame,
+  Ship: Ship,
+  Diamond: Diamond,
+  ShieldCheck: ShieldCheck,
+};
 
 export default function HomeScreen() {
   const [listings, setListings] = useState<any[]>([]);
@@ -53,13 +63,7 @@ export default function HomeScreen() {
   // Header Search Bar Component
   const RenderHeader = () => (
     <View style={styles.headerContainer}>
-      <TouchableOpacity style={styles.searchBar}>
-        <Ionicons name="search" size={20} color="#FF385C" />
-        <View>
-          <Text style={styles.searchTitle}>Where to?</Text>
-          <Text style={styles.searchSubtitle}>Anywhere • Any week • Add guests</Text>
-        </View>
-      </TouchableOpacity>
+      <SearchBar /> {/* Use the new SearchBar component */}
       
       <ScrollView 
         horizontal 
@@ -75,11 +79,10 @@ export default function HomeScreen() {
               activeCategory === item.name && styles.categoryItemActive
             ]}
           >
-            <Ionicons 
-              name={item.icon as any} 
-              size={24} 
-              color={activeCategory === item.name ? '#000' : '#717171'} 
-            />
+            {React.createElement(iconMap[item.icon as keyof typeof iconMap], {
+              size: 24,
+              color: activeCategory === item.name ? '#000' : '#717171',
+            })}
             <Text style={[
               styles.categoryText, 
               activeCategory === item.name && styles.categoryTextActive
@@ -139,38 +142,10 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     backgroundColor: '#fff',
-    paddingTop: 50, // Adjust based on device notch
+    paddingTop: 80, // Adjust based on device notch and for the floating search bar
     paddingBottom: 10,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
   },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: 'white',
-    width: '90%',
-    padding: 12,
-    borderRadius: 30,
-    gap: 12,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#c2c2c2',
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.12,
-    shadowRadius: 10,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  searchTitle: {
-    fontWeight: '700',
-    fontSize: 14,
-  },
-  searchSubtitle: {
-    color: '#717171',
-    fontSize: 12,
-  },
+
   categoryContainer: {
     paddingHorizontal: 20,
     paddingTop: 20,
@@ -183,7 +158,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   categoryItemActive: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 4,
     borderBottomColor: '#000',
   },
   categoryText: {

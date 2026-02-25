@@ -7,13 +7,13 @@ export default function PropertyCard({ item }) {
       {/* Property Image */}
       <Image 
         source={{ uri: item.image }} 
-        className="w-full h-72 rounded-2xl" 
+        className="w-full aspect-[20/19] rounded-2xl" 
         resizeMode="cover"
       />
       
       {/* Text Details */}
       <View className="mt-3 flex-row justify-between items-start">
-        <View>
+        <View className="flex-col gap-0.5">
           <Text className="font-bold text-lg text-gray-900">{item.location}</Text>
           <Text className="text-gray-500">Individual Host • {item.distance} km away</Text>
           <Text className="text-gray-500">{item.dates}</Text>
@@ -22,7 +22,7 @@ export default function PropertyCard({ item }) {
         
         {/* Rating */}
         <View className="flex-row items-center">
-          <Text className="text-sm">★ {item.rating}</Text>
+          <Text className="text-sm text-gray-700">★ {item.rating}</Text>
         </View>
       </View>
     </TouchableOpacity>
