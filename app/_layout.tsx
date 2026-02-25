@@ -59,6 +59,7 @@ function RootLayoutNav() {
         <Stack.Screen name="(host)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
+      <SpeedInsights />
     </ThemeProvider>
   );
 }
