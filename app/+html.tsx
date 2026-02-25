@@ -22,7 +22,11 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <style dangerouslySetInnerHTML={{ __html: responsiveBackground }} />
         {/* Add any additional <head> elements that you want globally available on web... */}
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <script dangerouslySetInnerHTML={{ __html: `window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };` }} />
+        <script defer src="/_vercel/speed-insights/script.js"></script>
+      </body>
     </html>
   );
 }
