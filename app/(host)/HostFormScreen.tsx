@@ -1,15 +1,42 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { Stack } from 'expo-router';
 
 // Placeholder for individual step components
-const CategoryStep = ({ onNext }) => (
-  <View style={styles.stepContainer}>
-    <Text style={styles.stepTitle}>Step 1: Property Category</Text>
-    <Text>Select your property type here.</Text>
-    <Button title="Next" onPress={onNext} />
-  </View>
-);
+interface CategoryStepProps {
+  onNext: () => void;
+  listingData: any; 
+  setListingData: React.Dispatch<React.SetStateAction<any>>;
+}
+
+const CategoryStep = ({ onNext, listingData, setListingData }: CategoryStepProps) => {
+  const categories = ['House', 'Apartment', 'Condo', 'Villa', 'Cabin'];
+
+  const handleCategorySelect = (category: string) => {
+    setListingData((prev: any) => ({ ...prev, category }));
+  };
+
+  return (
+    <View style={styles.stepContainer}>
+      <Text style={styles.stepTitle}>Step 1: Property Category</Text>
+      <View>
+        {categories.map((category) => (
+          <Button
+            key={category}
+            title={category}
+            onPress={() => handleCategorySelect(category)}
+            color={listingData.category === category ? 'blue' : 'gray'} 
+          />
+        ))}
+      </View>
+      <Button
+        title="Next"
+        onPress={onNext}
+        disabled={!listingData.category}
+      />
+    </View>
+  );
+};
 
 const LocationStep = ({ onNext, onBack }) => (
   <View style={styles.stepContainer}>
@@ -40,6 +67,14 @@ const DetailsStep = ({ onNext, onBack }) => (
 
 export default function HostFormScreen() {
   const [step, setStep] = useState(1);
+  const [listingData, setListingData] = useState({
+    category: "",
+    location: {},
+    images: [],
+    description: "",
+    amenities: [],
+    price: 0,
+  });
 
   const handleNext = () => {
     setStep((prevStep) => prevStep + 1);
@@ -60,15 +95,15 @@ export default function HostFormScreen() {
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <CategoryStep onNext={handleNext} />;
+        return <CategoryStep onNext={handleNext} listingData={listingData} setListingData={setListingData} />;
       case 2:
-        return <LocationStep onNext={handleNext} onBack={handleBack} />;
+        return <LocationStep onNext={handleNext} onBack={handleBack} listingData={listingData} setListingData={setListingData} />;
       case 3:
         return <ImageUploadStep onNext={handleNext} onBack={handleBack} />;
       case 4:
         return <DetailsStep onNext={handleSubmit} onBack={handleBack} />;
       default:
-        return <CategoryStep onNext={handleNext} />;
+        return <CategoryStep onNext={handleNext} listingData={listingData} setListingData={setListingData} />;
     }
   };
 

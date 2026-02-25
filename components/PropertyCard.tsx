@@ -7,7 +7,7 @@ export default function PropertyCard({ item }) {
       {/* Property Image */}
       <Image 
         source={{ uri: item.image }} 
-        className="w-full aspect-[20/19] rounded-2xl" 
+        className="w-full aspect-[20/19] rounded" 
         resizeMode="cover"
       />
       
@@ -16,7 +16,6 @@ export default function PropertyCard({ item }) {
         <View className="flex-col gap-0.5">
           <Text className="font-bold text-lg text-gray-900">{item.location}</Text>
           <Text className="text-gray-500">Individual Host • {item.distance} km away</Text>
-          <Text className="text-gray-500">{item.dates}</Text>
           <Text className="mt-1 font-bold text-gray-900">${item.price} <Text className="font-normal">night</Text></Text>
         </View>
         
